@@ -11,7 +11,7 @@ import {
   Star,
   Users,
 } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import EpisodeList from '../components/EpisodeList'
 import VideoPlayer from '../components/VideoPlayer'
@@ -26,13 +26,14 @@ const MovieDetailContent = ({ slug }) => {
 
   // State chọn tập hiện tại
   const [currentEpisode, setCurrentEpisode] = useState(null)
+  const [prevEpisodes, setPrevEpisodes] = useState(episodes)
 
-  // Khi data load xong → chọn tập đầu tiên
-  useEffect(() => {
+  if (episodes !== prevEpisodes) {
+    setPrevEpisodes(episodes)
     if (episodes.length > 0 && episodes[0].episodes.length > 0) {
       setCurrentEpisode(episodes[0].episodes[0])
     }
-  }, [episodes])
+  }
 
   const handleSelectEpisode = (ep) => {
     setCurrentEpisode(ep)

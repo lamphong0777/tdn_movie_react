@@ -4,6 +4,7 @@ import { useRef } from 'react'
 
 const VideoPlayer = ({ linkEmbed, title }) => {
   const wrapperRef = useRef(null)
+  const iframeRef = useRef(null)
 
   const handleFullscreen = () => {
     const el = wrapperRef.current
@@ -19,10 +20,10 @@ const VideoPlayer = ({ linkEmbed, title }) => {
   }
 
   const handleReload = () => {
-    // Force iframe reload
-    const iframe = wrapperRef.current?.querySelector('iframe')
-    if (iframe) {
-      iframe.src = iframe.src
+    // ✅ Cách 1: Set lại src bằng URL gốc từ prop
+    const iframe = iframeRef.current
+    if (iframe && linkEmbed) {
+      iframe.src = linkEmbed
     }
   }
 
@@ -40,6 +41,7 @@ const VideoPlayer = ({ linkEmbed, title }) => {
       className="relative aspect-video bg-bg border border-line overflow-hidden group"
     >
       <iframe
+        ref={iframeRef}
         src={linkEmbed}
         title={title}
         allowFullScreen
@@ -49,7 +51,6 @@ const VideoPlayer = ({ linkEmbed, title }) => {
         referrerPolicy="no-referrer"
       />
 
-      {/* Action buttons */}
       <div className="absolute top-3 right-3 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-10">
         <button
           onClick={handleReload}

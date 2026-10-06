@@ -5,20 +5,15 @@ import { adaptMovies, buildUrl } from '../utils/movieAdapter'
 
 const useSearchMovies = (keyword, debounceMs = 400, limit = 8) => {
   const [movies, setMovies] = useState([])
-  const [pagination, setPagination] = useState(null) // ✅ Có state này
+  const [pagination, setPagination] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
-  useEffect(() => {
-    const trimmed = keyword?.trim() || ''
+  const trimmed = keyword?.trim() || ''
 
-    if (!trimmed) {
-      setMovies([])
-      setPagination(null) // ✅ Reset
-      setError(null)
-      setLoading(false)
-      return
-    }
+  useEffect(() => {
+    // ✅ Không setState đồng bộ — chỉ fetch khi có keyword
+    if (!trimmed) return
 
     let isMounted = true
 
@@ -45,7 +40,7 @@ const useSearchMovies = (keyword, debounceMs = 400, limit = 8) => {
         }))
 
         setMovies(adapted)
-        setPagination(response.data?.pagination || null) // ✅ Set pagination
+        setPagination(response.data?.pagination || null)
       } catch (err) {
         if (isMounted && err.name !== 'CanceledError') {
           setError(err.message || 'Không thể tìm kiếm')
@@ -59,10 +54,16 @@ const useSearchMovies = (keyword, debounceMs = 400, limit = 8) => {
       isMounted = false
       clearTimeout(timer)
     }
-  }, [keyword, debounceMs, limit])
+  }, [trimmed, debounceMs, limit])
 
-  // ✅ Return pagination
-  return { movies, pagination, loading, error }
+  // ✅ Tính giá trị trả về dựa trên keyword
+  // Khi keyword rỗng, trả về giá trị mặc định ngay (không cần state)
+  return {
+    movies: trimmed ? movies : [],
+    pagination: trimmed ? pagination : null,
+    loading: trimmed ? loading : false,
+    error: trimmed ? error : null,
+  }
 }
 
 export default useSearchMovies

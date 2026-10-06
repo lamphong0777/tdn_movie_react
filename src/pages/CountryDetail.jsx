@@ -384,7 +384,7 @@ const CountryDetailContent = ({ countrySlug }) => {
                         e.preventDefault()
                         e.stopPropagation()
                         // TODO: Xử lý yêu thích (VD: toggle localStorage, gọi API)
-                        console.log('Yêu thích:', serie.slug)
+                        console.log('Yêu thích:', movie.slug)
                       }}
                       aria-label="Yêu thích"
                       className="bg-bg/80 backdrop-blur-sm border border-line p-3 hover:border-gold hover:text-gold text-cream transition-colors cursor-pointer"
