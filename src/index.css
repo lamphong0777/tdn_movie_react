@@ -1,0 +1,283 @@
+/* src/index.css */
+@import 'tailwindcss';
+
+/* ============================================================
+   🎬 THEME: CINEMATIC EDITORIAL
+   Noir + Gold — không bo góc, không theo Netflix
+   Dark/Light mode với class strategy
+   ============================================================ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* ============================================
+     DARK MODE (mặc định - Noir + Gold)
+     ============================================ */
+  --color-dark-bg: #0b0b0f;
+  --color-dark-surface: #14141a;
+  --color-dark-surface-2: #1c1c24;
+  --color-dark-surface-3: #26262e;
+  --color-dark-text: #e8e6df;
+  --color-dark-cream: #f4f1e8;
+  --color-dark-muted: #8a8a94;
+  --color-dark-inverse: #0b0b0f;
+  --color-dark-line: #26262e;
+  --color-dark-line-strong: #3a3a44;
+
+  /* ============================================
+     LIGHT MODE (Cream + Ink - Editorial Paper)
+     ============================================ */
+  --color-light-bg: #f4f1e8;
+  --color-light-surface: #ffffff;
+  --color-light-surface-2: #ebe7da;
+  --color-light-surface-3: #ddd8c9;
+  --color-light-text: #1a1a1f;
+  --color-light-cream: #0b0b0f;
+  --color-light-muted: #6b6b73;
+  --color-light-inverse: #f4f1e8;
+  --color-light-line: #d4cebc;
+  --color-light-line-strong: #b8b0a0;
+
+  /* === Accent - Gold (giữ nguyên cho cả 2 mode) === */
+  --color-gold: #f5c518;
+  --color-gold-soft: #d4a80f;
+  --color-gold-deep: #a67c00;
+  --color-gold-glow: #f5c51840;
+
+  /* === Status (giữ nguyên) === */
+  --color-success: #4ade80;
+  --color-warning: #f5c518;
+  --color-danger: #f43f5e;
+
+  /* ============================================
+     SEMANTIC TOKENS (sẽ được ghi đè bởi .dark hoặc :root)
+     Mặc định = Dark mode
+     ============================================ */
+  --color-bg: var(--color-dark-bg);
+  --color-surface: var(--color-dark-surface);
+  --color-surface-2: var(--color-dark-surface-2);
+  --color-surface-3: var(--color-dark-surface-3);
+  --color-text: var(--color-dark-text);
+  --color-cream: var(--color-dark-cream);
+  --color-muted: var(--color-dark-muted);
+  --color-inverse: var(--color-dark-inverse);
+  --color-line: var(--color-dark-line);
+  --color-line-strong: var(--color-dark-line-strong);
+  --color-line-gold: #f5c51866;
+
+  /* === Gradient === */
+  --background-image-noir-gradient: linear-gradient(135deg, #0b0b0f 0%, #14141a 50%, #0b0b0f 100%);
+  --background-image-paper-gradient: linear-gradient(135deg, #f4f1e8 0%, #ffffff 50%, #f4f1e8 100%);
+  --background-image-gold-gradient: linear-gradient(90deg, #f5c518, #d4a80f);
+  --background-image-overlay-gradient: linear-gradient(
+    to top,
+    #0b0b0f 0%,
+    #0b0b0fcc 40%,
+    transparent 100%
+  );
+  --background-image-overlay-light: linear-gradient(
+    to top,
+    #f4f1e8 0%,
+    #f4f1e8cc 40%,
+    transparent 100%
+  );
+}
+
+/* ============================================================
+   MODE OVERRIDES
+   ============================================================ */
+@layer base {
+  /* Light mode (default khi không có .dark) */
+  :root {
+    --color-bg: var(--color-light-bg);
+    --color-surface: var(--color-light-surface);
+    --color-surface-2: var(--color-light-surface-2);
+    --color-surface-3: var(--color-light-surface-3);
+    --color-text: var(--color-light-text);
+    --color-cream: var(--color-light-cream);
+    --color-muted: var(--color-light-muted);
+    --color-inverse: var(--color-light-inverse);
+    --color-line: var(--color-light-line);
+    --color-line-strong: var(--color-light-line-strong);
+  }
+
+  /* Dark mode - override khi có .dark trên html */
+  .dark {
+    --color-bg: var(--color-dark-bg);
+    --color-surface: var(--color-dark-surface);
+    --color-surface-2: var(--color-dark-surface-2);
+    --color-surface-3: var(--color-dark-surface-3);
+    --color-text: var(--color-dark-text);
+    --color-cream: var(--color-dark-cream);
+    --color-muted: var(--color-dark-muted);
+    --color-inverse: var(--color-dark-inverse);
+    --color-line: var(--color-dark-line);
+    --color-line-strong: var(--color-dark-line-strong);
+  }
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-bg text-text antialiased;
+    font-family:
+      'Inter',
+      system-ui,
+      -apple-system,
+      'Segoe UI',
+      sans-serif;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
+  }
+
+  /* Headings dùng serif — tạo chất editorial */
+  h1,
+  h2,
+  h3 {
+    font-family: 'Playfair Display', 'Georgia', serif;
+    letter-spacing: -0.02em;
+  }
+
+  ::selection {
+    background: #f5c51866;
+    color: #0b0b0f;
+  }
+
+  /* Scrollbar vuông, mảnh */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg);
+    transition: background-color 0.3s ease;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-line);
+    transition: background-color 0.3s ease;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #f5c518;
+  }
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes goldPulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-25%);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+.animate-slide-in-left {
+  animation: slideInLeft 0.6s ease-out forwards;
+}
+.animate-gold-pulse {
+  animation: goldPulse 1.5s ease-in-out infinite;
+}
+.animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* ============================================================
+   EDITORIAL UTILITIES
+   ============================================================ */
+@layer utilities {
+  /* Số thứ tự lớn kiểu tạp chí */
+  .text-editorial-num {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-style: italic;
+    line-height: 0.8;
+  }
+
+  /* Letter-spacing cho label nhỏ */
+  .tracking-editorial {
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* Viền kép kiểu khung tranh */
+  .border-frame {
+    border: 1px solid var(--color-line);
+    outline: 1px solid var(--color-line);
+    outline-offset: 4px;
+    transition:
+      border-color 0.3s ease,
+      outline-color 0.3s ease;
+  }
+
+  /* Transition mượt cho theme switching */
+  .theme-transition * {
+    transition:
+      background-color 0.3s ease,
+      border-color 0.3s ease,
+      color 0.3s ease,
+      fill 0.3s ease,
+      stroke 0.3s ease;
+  }
+}
